@@ -9,15 +9,18 @@ my ($infile) = @*ARGS;
 
 my $content = slurp "templates/top.tmpl";
 
+# Q: why does this not blow up?
+# if ($line ~~ m/TITLE: (.*)/) {
+
 for lines($infile) -> $line {
-	if ($line ~~ m/TITLE:/) {
-		say $line;
-		#$contetn 
+	if ($line ~~ m/TITLE\:\s*   (.*)/) {
+		#say $0;
+		$content ~~ s/TMPL_TITLE/$0/;
 	}
 	#say $line;
 }
 
-my $bottom = slurp "templates/bottom.tmpl";
+$content ~= slurp "templates/bottom.tmpl";
 
 my $out = open "out.html", :w;
 $out.say($content);
