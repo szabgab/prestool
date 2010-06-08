@@ -1,0 +1,26 @@
+
+      </div>
+    </div>
+    <script>
+      $(document).ready(function() {
+        var presentation = new Presentation();
+
+        $(document).keydown(function(e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+
+          // Right Arrow or Space
+          if (code == '39' || code == '32') {
+            presentation.nextSlide();
+          }
+
+          // Left Arrow
+          else if (code == '37') {
+            presentation.prevSlide();
+          }
+        });
+
+        sh_highlightDocument();
+      });
+    </script>
+  </body>
+</html>
