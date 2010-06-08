@@ -1,5 +1,7 @@
 TITLE: Rakudo and Perl 6
 =================
+=middle
+Rakudo and Perl 6
 
 
 Perl 6 is a new dialect of the Perl language family,
