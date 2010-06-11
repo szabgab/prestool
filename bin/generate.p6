@@ -13,7 +13,11 @@ my $content = slurp "templates/top.tmpl";
 # if ($line ~~ m/TITLE: (.*)/) {
 
 my @data;
-for lines($infile) -> $line {
+for lines($infile) -> $l {
+	my $line = $l; # to make it read/write as traits are not yet understood
+	$line ~~ s/\<r\>/<em class="attention">/;
+	$line ~~ s/\<\/r\>/<\/em>/;
+	
 	if ($line ~~ m/TITLE\:\s*   (.*)/) {
 		#say $0;
 		$content ~~ s/TMPL_TITLE/$0/;
@@ -39,13 +43,15 @@ sub process_slide(@lines) {
 	#say @lines.perl;
 	return '' if not @lines;
 	
-	my $slide = '        <div class="slide">' ~ "\n";
+	my $slide = qq{        <div class="slide">\n};
+	$slide   ~= qq{           <div class="section">\n};
+
 	my $type;
 	my @par;
 	while @lines {
 		my $line = @lines.shift;
 		if $line ~~ m/^\=title\s+  (.*)/ {
-			$slide ~= '<h1>' ~ $0 ~ '</h1>';
+			$slide ~= "<h1>{$0}</h1>\n";
 		} elsif $line ~~ m/^\=(\w.*)/ {
 			my $newtype = $0;
 			$slide ~= section($type, @par);
@@ -59,7 +65,8 @@ sub process_slide(@lines) {
 	if @par {
 		$slide ~= section($type, @par);
 	}
-	$slide ~= "        </div>\n";
+	$slide ~= qq{           </div>\n};
+	$slide ~= qq{        </div>\n};
 
 	return $slide;
 }
@@ -70,22 +77,16 @@ sub section($type, @par) {
 	my $slide = '';
 	given $type {
 		when 'middle' {
-			$slide ~= '<div class="section">';
-			$slide ~= '  <div class="middle">';
-			$slide ~= '    <h1 class="huge">' ~ @par.join("\n") ~ '</h1>';
-			$slide ~= '  </div>';
-			$slide ~= '</div>';
+			$slide ~= qq{  <div class="middle">\n};
+			$slide ~= qq{    <h1 class="huge">{@par.join("\n")}</h1>\n};
+			$slide ~= qq{  </div>\n};
 		}
 		when 'code perl6' {
-			$slide ~= "<pre class=\"sh_perl\">\n";
+			$slide ~= qq{<pre class="sh_perl">\n};
 			$slide ~= @par.join("\n");
-			$slide ~= "</pre>\n";
+			$slide ~= qq{</pre>\n};
 		}
 		when 'ul' {
-			#<em class="attention">
-	#say @par.perl;
-	#say @par.grep(m/\S/).perl;
-	#say @par.grep(m/\S/).map({"<li>{$_}</li>"}).perl;
 			$slide ~= "<ul>\n";
 			$slide ~= @par.grep(m/\S/).map({"<li>{$_}</li>"}).join("\n");
 			$slide ~= "</ul>\n";

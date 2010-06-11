@@ -7,9 +7,10 @@ Rakudo and Perl 6
 =title Perl 6 vs Perl 5
 
 =ul
-Perl 6 is a new dialect of the Perl language family, a sibling of Perl 5.
+Perl 6 is a <r>new dialect</r> of the Perl language family, a sibling of Perl 5.
 As opposed to Perl 5, Perl 6 has a definition and can have several implementations.
-Currently the most advanced implementation is called Rakudo. It runs on top of the Parrot Virtual Machine.
+Currently the most advanced implementation is called <r>Rakudo</r>.
+It runs on top of the <r>Parrot</r> Virtual Machine.
 
 
 =======
@@ -18,21 +19,18 @@ Currently the most advanced implementation is called Rakudo. It runs on top of t
 =ul
 Both Perl 6 and Rakudo is under heavy development.
 
-Rakudo *, the first reasonably usable version of it is planned to
-be relesed in the next few months.
-
+Rakudo *, the first reasonably usable version of it
+Planned to be relesed in the next few weeks
 
 ============
 =title Compability
 
-Perl 6 is not be compatible with Perl 5 but there are several plans
-on how to transit from Perl 5 to Perl 6 is that is what you would like to.
+=ul
+Perl 6 is not compatible with Perl 5 but there are several plans for transition
 
-One plan is to create a Perl 5 to Perl 6 translator.
+One plan is to create a Perl 5 to Perl 6 <r>translator</r>.
 
-Another plan is that the Perl 6 engine will be able to recognize Perl 5 
-code and use the Perl 5 engine where needed.
-
+perl will recognize Perl 5 and Perl 6 code and use the right engine
 
 
 ===========
@@ -40,7 +38,7 @@ code and use the Perl 5 engine where needed.
 
 =code perl6
 
-    say "Perl 6 rocks".chars;
+say "Perl 6 rocks".chars;
 
 
 ===========
@@ -51,8 +49,10 @@ code and use the Perl 5 engine where needed.
     my @names = ("Foo", "Bar", "Moo");
     say "Hello { join(', ', @names) } how are you?";
 
+=ul
 The output will look like this:
 
+=code perl6
     Hello Foo, Bar, Moo how are you?
 
 
