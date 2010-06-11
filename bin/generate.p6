@@ -36,23 +36,74 @@ my $out = open "out.html", :w;
 $out.say($content);
 
 sub process_slide(@lines) {
-	say @lines.perl;
+	#say @lines.perl;
 	return '' if not @lines;
 	
 	my $slide = '        <div class="slide">' ~ "\n";
-	if @lines[0] eq '=middle' {
-		$slide ~= '<div class="section">';
-		$slide ~= '  <div class="middle">';
-                $slide ~= '    <h1 class="huge">' ~ @lines[1] ~ '</h1>';
-                $slide ~= '  </div>';
-		$slide ~= '</div>';
-	} else {
+	my $type;
+	my @par;
+	while @lines {
+		my $line = @lines.shift;
+		if $line ~~ m/^\=title\s+  (.*)/ {
+			$slide ~= '<h1>' ~ $0 ~ '</h1>';
+		} elsif $line ~~ m/^\=(\w.*)/ {
+			my $newtype = $0;
+			$slide ~= section($type, @par);
+			$type = $newtype;
+			@par = ();
+		} else {
+			push @par, $line;
+		}
 		#die "invalid entry";
+	}
+	if @par {
+		$slide ~= section($type, @par);
 	}
 	$slide ~= "        </div>\n";
 
 	return $slide;
 }
+
+
+sub section($type, @par) {
+	return if not @par.join('');
+	my $slide = '';
+	given $type {
+		when 'middle' {
+			$slide ~= '<div class="section">';
+			$slide ~= '  <div class="middle">';
+			$slide ~= '    <h1 class="huge">' ~ @par.join("\n") ~ '</h1>';
+			$slide ~= '  </div>';
+			$slide ~= '</div>';
+		}
+		when 'code perl6' {
+			$slide ~= "<pre class=\"sh_perl\">\n";
+			$slide ~= @par.join("\n");
+			$slide ~= "</pre>\n";
+		}
+		when 'ul' {
+			#<em class="attention">
+	#say @par.perl;
+	#say @par.grep(m/\S/).perl;
+	#say @par.grep(m/\S/).map({"<li>{$_}</li>"}).perl;
+			$slide ~= "<ul>\n";
+			$slide ~= @par.grep(m/\S/).map({"<li>{$_}</li>"}).join("\n");
+			$slide ~= "</ul>\n";
+		}
+		when 'pre' {
+			$slide ~= "<pre>\n";
+			$slide ~= @par.join("\n");
+			$slide ~= "</pre>\n";
+		}
+		default {
+			$slide ~= "<pre>\n";
+			$slide ~= @par.join("\n");
+			$slide ~= "</pre>\n";
+		}
+	}
+	return $slide;
+}
+
 
 sub usage($msg?) {
 	if $msg {
@@ -60,4 +111,5 @@ sub usage($msg?) {
 		say "-----"
 	}
 	say "Usage: $*PROGRAM_NAME infile";
+	exit;
 }

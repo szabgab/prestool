@@ -3,28 +3,27 @@ TITLE: Rakudo and Perl 6
 =middle
 Rakudo and Perl 6
 
+========
+=title Perl 6 vs Perl 5
 
-Perl 6 is a new dialect of the Perl language family,
-a sibling of Perl 5.
-
-As opposed to Perl 5, Perl 6 has a definition and can have several
-implementations.
-
-Currently the most advanced implementation is called Rakudo.
-It runs on top of the Parrot Virtual Machine.
+=ul
+Perl 6 is a new dialect of the Perl language family, a sibling of Perl 5.
+As opposed to Perl 5, Perl 6 has a definition and can have several implementations.
+Currently the most advanced implementation is called Rakudo. It runs on top of the Parrot Virtual Machine.
 
 
-Status
 =======
+=title Status
 
+=ul
 Both Perl 6 and Rakudo is under heavy development.
 
 Rakudo *, the first reasonably usable version of it is planned to
 be relesed in the next few months.
 
 
-Compability
 ============
+=title Compability
 
 Perl 6 is not be compatible with Perl 5 but there are several plans
 on how to transit from Perl 5 to Perl 6 is that is what you would like to.
@@ -36,15 +35,18 @@ code and use the Perl 5 engine where needed.
 
 
 
-
-Everything is an object
 ===========
+=title Everything is an object
+
+=code perl6
 
     say "Perl 6 rocks".chars;
 
 
-Interpolation expressions
 ===========
+=title Interpolation expressions
+
+=code perl6
 
     my @names = ("Foo", "Bar", "Moo");
     say "Hello { join(', ', @names) } how are you?";
@@ -54,8 +56,8 @@ The output will look like this:
     Hello Foo, Bar, Moo how are you?
 
 
-Junctions
 ===========
+=title Junctions
 
 Instead of  
 
