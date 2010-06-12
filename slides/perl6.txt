@@ -3,6 +3,11 @@ TITLE: Rakudo and Perl 6
 =middle
 Rakudo and Perl 6
 
+by
+
+Gabor Szabo
+http://szabgab.com/
+
 ========
 =title Perl 6 vs Perl 5
 
@@ -19,8 +24,8 @@ It runs on top of the <r>Parrot</r> Virtual Machine.
 =ul
 Both Perl 6 and Rakudo is under heavy development.
 
-Rakudo *, the first reasonably usable version of it
-Planned to be relesed in the next few weeks
+<r>Rakudo *</r>, the first reasonably usable version of it
+Planned to be relesed in the <r>next few weeks</r>
 
 ============
 =title Compability
@@ -30,8 +35,20 @@ Perl 6 is not compatible with Perl 5 but there are several plans for transition
 
 One plan is to create a Perl 5 to Perl 6 <r>translator</r>.
 
-perl will recognize Perl 5 and Perl 6 code and use the right engine
+perl will <r>recognize</r> Perl 5 and Perl 6 <r>code</r> and use the right engine
 
+
+=code perl6
+
+use v6;
+
+
+===========
+=title Hello World
+
+=code perl6
+
+say "Hello World";
 
 ===========
 =title Everything is an object
@@ -39,6 +56,15 @@ perl will recognize Perl 5 and Perl 6 code and use the right engine
 =code perl6
 
 say "Perl 6 rocks".chars;
+
+===========
+=title Reading from STDIN, prompting
+
+=code perl6
+
+my $name = prompt("Please type in yourname: ");
+
+say "Hello $name";
 
 
 ===========
@@ -59,39 +85,44 @@ The output will look like this:
 ===========
 =title Junctions
 
+=ul
 Instead of  
+
+=code perl6
 
     if ($age == 3 or $age == 4 or $age == 5) {
     }
 
+=ul
 you will be able to write
 
+=code perl6
     if ($age == 3|4|5) {
     }
 
 
-for loop
 ===========
+=title for loop - One element a time
 
-One element a time
-------------------
-
+=code perl6
     my @fellows = <Foo Bar Baz>;
     for @fellows -> $name {
         say $name;
     }
 
 
-Two elements a time
--------------------
+===========
+=title for loop - Two elements a time
+=code perl6
 
     my @phones = <Foo 123 Bar 456 Moo 789>;
     for @phones -> $name, $number {
         say "$name  $number";
     }
 
-Going over elements of a hash
-------------------------------
+===========
+=title for loop - Going over elements of a hash
+=code perl6
 
     my %phone = (
         "Foo" => 123,
@@ -103,9 +134,9 @@ Going over elements of a hash
     }
 
 
-Several elements at a time
---------------------------
-
+===========
+=title Several elements at a time
+=code perl6
     my @scores = <
         Valencia         1  1  Recreativo_Huelva
         Athletic_Bilbao  2  5  Real_Madrid
@@ -123,30 +154,33 @@ Several elements at a time
         say "$home $guest $home_score : $guest_score";
     }
 
-Missing values
-----------------
-
+===========
+=title Missing values
+=code perl6
     for (1, 2, 3, 4, 5) -> $x, $y {
         say "$x $y";
     }
 
+=ul
 Will generate the following:
 
+=pre
     1 2
     3 4
     StopIteration
 
+=ul
 But we can say the second value is optional:
 
+=code perl6
     for (1, 2, 3, 4, 5) -> $x, $y? {
             say "$x $y";
     }
 
 
-Iterating over more than one array in parallel
-----------------------
-
-
+======
+=title Iterating over more than one array in parallel
+=code perl6
     my @chars   = <a b c>;
     my @numbers = <1 2 3>;
 
@@ -158,35 +192,40 @@ Iterating over more than one array in parallel
     b 2
     c 3
 
-
-Infinite lists
---------------
+====
+=title Infinite lists
+=code perl6
 
     for (1..Inf) -> $i {
-
 
     }
 
 
-The last element of an infinite lists
---------------------------------------
-
+=title The last element of an infinite lists
+=code perl6
 
     (1..Inf)[*-1]
 
+=======
+=title Regex
+
+=code perl6
+
+$code .= subst(/\</, {"&lt;"}, :g);
 
 
-
-Grammars
 ===========
+=title Grammars
 
 
-CPAN - proto
 ==============
+=title CPAN - proto
 
 
-How to get involved?
 ===================
+=title How to get involved?
+
+=ul
 
 IRC: #perl6 on freenode.net 
 
@@ -194,4 +233,8 @@ Mailing list
 
 Web site:  http://perl6.org/
 
+
+=================
+=middle
+Questions?
 

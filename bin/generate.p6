@@ -15,9 +15,11 @@ my $content = slurp "templates/top.tmpl";
 my @data;
 for lines($infile) -> $l {
 	my $line = $l; # to make it read/write as traits are not yet understood
-	$line ~~ s/\<r\>/<em class="attention">/;
-	$line ~~ s/\<\/r\>/<\/em>/;
-	
+	#$line ~~ s/\<r\>/<em class="attention">/;
+	#$line ~~ s/\<\/r\>/<\/em>/;
+	$line .= subst(/\<r\>/, {qq{<em class="attention">}}, :g);
+	$line .= subst(/\<\/r\>/, {"<\/em>"}, :g);
+
 	if ($line ~~ m/TITLE\:\s*   (.*)/) {
 		#say $0;
 		$content ~~ s/TMPL_TITLE/$0/;
@@ -78,12 +80,14 @@ sub section($type, @par) {
 	given $type {
 		when 'middle' {
 			$slide ~= qq{  <div class="middle">\n};
-			$slide ~= qq{    <h1 class="huge">{@par.join("\n")}</h1>\n};
+			$slide ~= qq{    <h1 class="huge">{@par.join("<br>")}</h1>\n};
 			$slide ~= qq{  </div>\n};
 		}
 		when 'code perl6' {
 			$slide ~= qq{<pre class="sh_perl">\n};
-			$slide ~= @par.join("\n");
+			my $code = @par.join("\n");
+			$code .= subst(/\</, {"&lt;"}, :g);
+			$slide ~= $code;
 			$slide ~= qq{</pre>\n};
 		}
 		when 'ul' {
