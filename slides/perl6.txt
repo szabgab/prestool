@@ -92,6 +92,9 @@ if $age > 18 {
    say "You can drink beer with Perl Mongers.";
 }
 
+=ul
+No parenthesis needed
+
 ========
 =title Chained comparison
 
@@ -379,8 +382,7 @@ if 10    ~~ m/ <num> / {
 =title Named subrules and their content
 
 =code perl6
-
-regex num { \d ** 1..3 }; say 10    ~~ m/ <num> /;
+regex num { \d ** 1..3 };
 
 say 10    ~~ m/ <num> /;     # 10
 say $/;                      # 10
