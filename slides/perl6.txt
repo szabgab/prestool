@@ -33,7 +33,7 @@ Planned to be relesed in the <r>next few weeks</r>
 =ul
 Perl 6 is not compatible with Perl 5 but there are several plans for transition
 
-One plan is to create a Perl 5 to Perl 6 <r>translator</r>.
+Create a Perl 5 to Perl 6 <r>translator</r>.
 
 perl will <r>recognize</r> Perl 5 and Perl 6 <r>code</r> and use the right engine
 
@@ -83,6 +83,32 @@ The output will look like this:
 
 
 ===========
+=title if condition
+
+=code perl6
+
+my $age = 23;
+if $age > 18 {
+   say "You can drink beer with Perl Mongers.";
+}
+
+========
+=title Chained comparison
+
+=code perl6
+
+if 23 <= $age and $age <= 42 {
+}
+
+=ul
+better written as
+
+=code perl6
+
+if 23 <= $age <= 42 {
+}
+
+===========
 =title Junctions
 
 =ul
@@ -90,14 +116,14 @@ Instead of
 
 =code perl6
 
-    if ($age == 3 or $age == 4 or $age == 5) {
+    if $age == 3 or $age == 4 or $age == 5 {
     }
 
 =ul
 you will be able to write
 
 =code perl6
-    if ($age == 3|4|5) {
+    if $age == 3|4|5 {
     }
 
 
@@ -200,14 +226,218 @@ But we can say the second value is optional:
 
     }
 
+=====
+=title Twigils and special variables
 
-=title The last element of an infinite lists
 =code perl6
+$*PROGRAM_NAME
 
-    (1..Inf)[*-1]
+=ul
+the path to the currently running Perl 6 program
+
+=code perl6
+$*CWD
+
+=ul
+current working directory.
+
+=code perl6
+$*IN
+=ul
+Is the standard input (STDIN). You can read a line using $*IN.get
+
+=code perl6
+@*ARGS
+=ul
+command line arguments
 
 =======
-=title Regex
+=title Subroutines
+
+=ul
+Signature
+
+=code perl6
+sub add ($a, $b) {
+    return $a + $b;
+}
+
+say add(2, 3);      # returns 5
+
+#say add(2);        # is an error
+#say add(2, 3, 4);  # is an error
+
+
+=ul
+Another example
+
+=code perl6
+sub process_template($input, $output, %params) {
+}
+
+========
+=title multi method dispatch
+
+=code perl6
+
+multi sub process_template($input, %params) {
+}
+
+multi sub process_template($input, $output, %params) {
+}
+
+========
+=title Optional parameters
+
+=code perl6
+multi sub process_template($input, $output, %params?) {
+}
+
+
+======
+=title Type restriction
+
+=code perl6
+sub abc(Int $x) { say 1 };
+abc(2);    # 1
+
+abc("a");  #  Nominal type check failed for parameter '$x'; expected Int but got Str instead
+
+======
+=title Constraints
+
+=code perl6
+sub abc($x where {$^a < 2} ) { 
+    say $x
+}; 
+
+abc(1); # 1
+
+abc(2); # Constraint type check failed for parameter '$x'
+
+=======
+=title Meta Operators
+
+=ul
+Reduction operator
+
+=code perl6
+say [*] 1..10;
+
+=ul
+Hyper operators
+
+=code perl6
+my @x = (1, 2) >>+<< (3, 4);
+say @x.perl;  # [4, 6]
+
+=ul
+Cross operators
+
+=code perl6
+my @x = (1, 2) X+ (4, 7);
+say @x.perl;        # [5, 8, 6, 9]
+
+
+=======
+=title Create operators
+
+=code perl6
+our sub infix:<rrr>($a, $b) { 
+    $a + 2* $b
+};
+
+say 2 rrr 3;        # 8
+
+=ul
+Get meta operators
+
+=code perl6
+say [rrr] 1,1,1;    # 5
+
+
+=======
+=title Regexes - Matching
+
+=code perl6
+my $c = "What was the color of the cat?";
+if ($c ~~ m/color/) {
+    say "Matching '$/'";                      # 'color'
+}
+
+======
+=title Named subrules
+
+=code perl6
+
+regex num { \d ** 1..3 };
+
+if 10    ~~ m/ <num> / {
+}
+
+======
+=title Named subrules and their content
+
+=code perl6
+
+regex num { \d ** 1..3 }; say 10    ~~ m/ <num> /;
+
+say 10    ~~ m/ <num> /;     # 10
+say $/;                      # 10
+say $/<num>;                 # 10
+
+regex dot { \. };
+
+regex ip { ^  <num> <dot> <num> <dot> <num> <dot> <num> $ };
+
+say "127.0.0.1" ~~ m/ <ip> /;      # 127.0.0.1
+say $/;      # 127.0.0.1
+say $/<ip>;  # 127.0.0.1
+say $/<ip><num>[0]; # 127
+say $/<ip><num>[1]; # 0
+say $/<ip><num>[2]; # 0
+say $/<ip><num>[3]; # 0
+
+=======
+=title Reusing previous captures
+
+=code perl6
+
+say '1234' ~~ / (\d) $0 /;            # no match
+say '12234' ~~ / (\d) $0 /;           # 22
+
+=ul
+Use names
+
+=code perl6
+
+say '1234' ~~ / <digit> $<digit> /;   # no match
+say '12234' ~~ / <digit> $<digit> /;  # 22
+
+=ul
+The last one counts
+
+=code perl6
+say '122342556' ~~ / <digit> $<digit> .* <digit> $<digit>/; # 2234255
+say $/<digit>[0];  # 2
+say $/<digit>[1];  # 5
+
+========
+=title Code embedded in regexes
+
+=code perl6
+
+my $str = "The black cat climbed the green tree";
+
+$str ~~ m/
+	a {{ print "a found\n" }}
+	x {{ print "x found\n" }}
+	/;
+say "The match is '$/'";
+
+
+=======
+=title Substitute
 
 =code perl6
 
@@ -215,11 +445,35 @@ $code .= subst(/\</, {"&lt;"}, :g);
 
 
 ===========
+=title tokens and rules
+
+=ul
+They are regex-es that do not backtrack
+
+=code perl6
+
+    $string ~~ regex { \d+ }
+    $string ~~ token { \d+ }
+    $string ~~ rule { \d+ }
+
+=ul
+and these are equivalent to
+
+=code perl6
+
+    $string ~~ m/^ \d+ $/;
+    $string ~~ m/^ \d+: $/;
+    $string ~~ m/^ <.ws> \d+: <.ws> $/;
+
+
+===========
 =title Grammars
 
+=ul
 
-==============
-=title CPAN - proto
+Inheritable set of regexes, rules and tokens
+
+Like classes
 
 
 ===================
@@ -233,8 +487,12 @@ Mailing list
 
 Web site:  http://perl6.org/
 
+proto
 
 =================
 =middle
 Questions?
 
+
+Gabor Szabo
+http://szabgab.com

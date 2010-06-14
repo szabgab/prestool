@@ -1,11 +1,12 @@
 use v6;
 
-# Q: can I declare program arguments the same way I can declar sub argumanets?
+# Q: can I declare program arguments the same way I can declare sub arguments?
 
 @*ARGS or usage();
 
 my ($infile) = @*ARGS;
 #say "Processing $infile";
+
 
 my $content = slurp "templates/top.tmpl";
 
