@@ -7,16 +7,7 @@
 
         $(document).keydown(function(e) {
           var code = (e.keyCode ? e.keyCode : e.which);
-
-          // Right Arrow or Space
-          if (code == '39' || code == '32') {
-            presentation.nextSlide();
-          }
-
-          // Left Arrow
-          else if (code == '37') {
-            presentation.prevSlide();
-          }
+          presentation.KeyDown(code);
         });
 
         sh_highlightDocument();

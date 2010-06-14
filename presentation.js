@@ -15,12 +15,21 @@ function Presentation() {
         presentation.currentSlide = match[1];
     }
 
-    presentation.updateClass = function (n, newClass) {
+	presentation.reset = function() {
+		for (i=0; i < presentation.totalSlides; i++) {
+        	var slide = presentation.slides[i];
+        	if (slide) {
+        		$(slide).removeClass('far-past past current future far-future');
+			}
+		}
+	}
+
+    presentation.setClass = function (n, newClass) {
         var slide = presentation.slides[n];
 
         if (!slide) { return; }
 
-        $(slide).removeClass('far-past past current future far-future');
+        //$(slide).removeClass('far-past past current future far-future');
         $(slide).addClass(newClass);
     };
 
@@ -48,20 +57,23 @@ function Presentation() {
             presentation.animateSlide(presentation.currentSlide - 2, '.far-past');
         }
 
+		presentation.setUrl();
+    };
+	presentation.setUrl = function() {
         if (presentation.currentSlide > 0) {
             $(document).attr('location').hash = '#slide' + presentation.currentSlide;
         }
         else {
             $(document).attr('location').hash = '';
         }
-    };
+	}
 
     presentation.initSlides = function () {
-        presentation.updateClass(presentation.currentSlide - 2, 'far-past');
-        presentation.updateClass(presentation.currentSlide - 1, 'past');
-        presentation.updateClass(presentation.currentSlide, 'current');
-        presentation.updateClass(presentation.currentSlide + 1, 'future');
-        presentation.updateClass(presentation.currentSlide + 2, 'far-future');
+        presentation.setClass(presentation.currentSlide - 2, 'far-past');
+        presentation.setClass(presentation.currentSlide - 1, 'past');
+        presentation.setClass(presentation.currentSlide, 'current');
+        presentation.setClass(presentation.currentSlide + 1, 'future');
+        presentation.setClass(presentation.currentSlide + 2, 'far-future');
     };
 
     presentation.nextSlide = function () {
@@ -85,6 +97,44 @@ function Presentation() {
 
         presentation.onprevslide();
     };
+
+    presentation.firstSlide = function () {
+        if (presentation.currentSlide <= 0) {
+            return;
+        }
+
+		presentation.reset();
+        presentation.currentSlide = 0;
+       	presentation.animateSlides('left');
+
+//		while (presentation.currentSlide > 0 ) {
+//            presentation.currentSlide--;
+//        	presentation.animateSlides('left');
+//		}
+
+//        presentation.initSlides();
+		presentation.setUrl();
+
+        presentation.onprevslide();
+    };
+
+
+    presentation.KeyDown =  function(code) {
+          // Right Arrow or Space
+          if (code == '39' || code == '32') {
+            presentation.nextSlide();
+          }
+
+          // Left Arrow
+          else if (code == '37') {
+            presentation.prevSlide();
+
+          } else if (code == '36') { // Home
+            presentation.firstSlide();
+          } else {
+            //alert(code);
+          }
+	};
 
     presentation.initSlides();
 };
