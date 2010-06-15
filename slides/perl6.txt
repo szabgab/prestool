@@ -22,7 +22,7 @@ It runs on top of the <r>Parrot</r> Virtual Machine.
 =title Status
 
 =ul
-Both Perl 6 and Rakudo is under heavy development.
+Both Perl 6 and Rakudo are under heavy development.
 
 <r>Rakudo *</r>, the first reasonably usable version of it
 Planned to be relesed in the <r>next few weeks</r>
