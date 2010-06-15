@@ -16,8 +16,6 @@ my $content = slurp "templates/top.tmpl";
 my @data;
 for lines($infile) -> $l {
 	my $line = $l; # to make it read/write as traits are not yet understood
-	#$line ~~ s/\<r\>/<em class="attention">/;
-	#$line ~~ s/\<\/r\>/<\/em>/;
 	$line .= subst(/\<r\>/, {qq{<em class="attention">}}, :g);
 	$line .= subst(/\<\/r\>/, {"<\/em>"}, :g);
 

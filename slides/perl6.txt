@@ -144,7 +144,7 @@ you will be able to write
 =title for loop - Two elements a time
 =code perl6
 
-    my @phones = <Foo 123 Bar 456 Moo 789>;
+    my @phones = <Foo 123 Bar 456 Moo 789 Foo 976>;
     for @phones -> $name, $number {
         say "$name  $number";
     }
